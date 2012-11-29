@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>info.freelibrary</groupId>
+		<artifactId>freelib-djatoka</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+    
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>info.freelibrary</groupId>
+	<artifactId>openjpeg</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+	<name>freelib-djatoka</name>
+	<packaging>jar</packaging>
+	<description>FreeLibrary repackaging of OpenJPEG</description>
+
+	<licenses>
+		<license>
+			<name>The GNU General Public License, Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+		</license>
+	</licenses>
+
+	<properties>
+		<java.version>1.7</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>freelib-snapshots</id>
+			<name>FreeLibrary Snapshot Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>freelib-snapshots</id>
+			<name>FreeLibrary Snapshot Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
