@@ -11,9 +11,9 @@
 	<groupId>info.freelibrary</groupId>
 	<artifactId>openjpeg</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
-	<name>freelib-djatoka</name>
+	<name>FreeLib Djatoka OpenJPEG</name>
 	<packaging>jar</packaging>
-	<description>FreeLibrary repackaging of OpenJPEG</description>
+	<description>The FreeLibrary repackaging of OpenJPEG</description>
 
 	<licenses>
 		<license>
