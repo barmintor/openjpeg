@@ -6,7 +6,7 @@
 		<artifactId>freelib-djatoka</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-    
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>info.freelibrary</groupId>
 	<artifactId>openjpeg</artifactId>
@@ -41,7 +41,70 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.googlecode.cmake-maven-project</groupId>
+				<artifactId>cmake-maven-plugin</artifactId>
+				<version>2.8.8-b1</version>
+				<executions>
+					<execution>
+						<id>cmake-generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<sourcePath>${project.basedir}</sourcePath>
+							<targetPath>${project.basedir}</targetPath>
+							<generator>Unix Makefiles</generator>
+							<environmentVariables>
+								<key>value</key>
+							</environmentVariables>
+						</configuration>
+					</execution>
+					<execution>
+						<id>cmake-compile</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<projectDirectory>${project.basedir}</projectDirectory>
+							<environmentVariables>
+								<key>value</key>
+							</environmentVariables>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--Used to store m2e settings only; Maven ignores it. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.googlecode.cmake-maven-project</groupId>
+										<artifactId>cmake-maven-plugin</artifactId>
+										<versionRange>[2.8.8-b1,)</versionRange>
+										<goals>
+											<goal>generate</goal>
+											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<repositories>
