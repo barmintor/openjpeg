@@ -53,8 +53,8 @@
 						</goals>
 						<configuration>
 							<sourcePath>${project.basedir}</sourcePath>
-							<targetPath>${project.basedir}/target</targetPath>
-							<generator>Unix Makefiles</generator>
+							<targetPath>${project.basedir}/target/openjpeg</targetPath>
+							<generator>${cmake.generator}</generator>
 							<environmentVariables>
 								<key>value</key>
 							</environmentVariables>
@@ -66,10 +66,7 @@
 							<goal>compile</goal>
 						</goals>
 						<configuration>
-							<projectDirectory>${project.basedir}/target</projectDirectory>
-							<environmentVariables>
-								<key>value</key>
-							</environmentVariables>
+							<projectDirectory>${project.basedir}/target/openjpeg</projectDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -106,6 +103,54 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+ 	<profiles>
+		<profile>
+			<id>linux</id>
+			<activation>
+				<os>
+					<name>Linux</name>
+				</os>
+			</activation>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<name>Mac OS X</name>
+				</os>
+			</activation>
+			<properties>
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<!-- with xcode -->
+				<!-- <cmake.generator>xcode</cmake.generator> -->
+			</properties>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+			    <!-- with cygwin -->
+				<cmake.generator>Unix Makefiles</cmake.generator>
+				<!-- with MinGW -->
+				<!-- <cmake.generator>MinGW Makefiles</cmake.generator> -->
+				<!-- with MSYS -->
+				<!-- <cmake.generator>MSYS Makefiles</cmake.generator> -->
+			</properties>
+		</profile>
+		
+		<!--
+		Other cmake.generators
+		http://www.cmake.org/cmake/help/v2.8.8/cmake.html#section_Generators
+		-->
+	</profiles>
 
 	<repositories>
 		<repository>
