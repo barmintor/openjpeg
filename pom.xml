@@ -56,7 +56,7 @@
 							<targetPath>${project.basedir}/target/openjpeg</targetPath>
 							<generator>${cmake.generator}</generator>
 							<environmentVariables>
-								<key>value</key>
+								<BUILD_THIRDPARTY>on</BUILD_THIRDPARTY>
 							</environmentVariables>
 						</configuration>
 					</execution>
@@ -67,6 +67,8 @@
 						</goals>
 						<configuration>
 							<projectDirectory>${project.basedir}/target/openjpeg</projectDirectory>
+							<environmentVariables>
+							</environmentVariables>
 						</configuration>
 					</execution>
 				</executions>
