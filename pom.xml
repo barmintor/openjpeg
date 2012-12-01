@@ -53,7 +53,7 @@
 						</goals>
 						<configuration>
 							<sourcePath>${project.basedir}</sourcePath>
-							<targetPath>${project.basedir}</targetPath>
+							<targetPath>${project.basedir}/target</targetPath>
 							<generator>Unix Makefiles</generator>
 							<environmentVariables>
 								<key>value</key>
@@ -66,7 +66,7 @@
 							<goal>compile</goal>
 						</goals>
 						<configuration>
-							<projectDirectory>${project.basedir}</projectDirectory>
+							<projectDirectory>${project.basedir}/target</projectDirectory>
 							<environmentVariables>
 								<key>value</key>
 							</environmentVariables>
