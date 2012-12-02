@@ -1998,6 +1998,13 @@ static OPJ_BOOL opj_j2k_read_siz(opj_j2k_t *p_j2k,
                 opj_read_bytes(p_header_data,&tmp,1);   /* YRsiz_i */
                 ++p_header_data;
                 l_img_comp->dy = (OPJ_INT32)tmp; /* should be between 1 and 255 */
+                if( l_img_comp->dx < 1 || l_img_comp->dx > 255 ||
+                    l_img_comp->dy < 1 || l_img_comp->dy > 255 ) {
+                    opj_event_msg(p_manager, EVT_ERROR,
+                                  "Invalid values for comp = %d : dx=%u dy=%u\n (should be between 1 and 255 according the JPEG2000 norm)",
+                                  i, l_img_comp->dx, l_img_comp->dy);
+                    return OPJ_FALSE;
+                }
 
 #ifdef USE_JPWL
                 if (l_cp->correct) {
@@ -2034,6 +2041,14 @@ static OPJ_BOOL opj_j2k_read_siz(opj_j2k_t *p_j2k,
         /* Compute the number of tiles */
         l_cp->tw = opj_int_ceildiv(l_image->x1 - l_cp->tx0, l_cp->tdx);
         l_cp->th = opj_int_ceildiv(l_image->y1 - l_cp->ty0, l_cp->tdy);
+
+        /* Check that the number of tiles is valid */
+        if (l_cp->tw == 0 || l_cp->th == 0 || l_cp->tw > 65535 / l_cp->th) {
+            opj_event_msg(  p_manager, EVT_ERROR, 
+                            "Invalid number of tiles : %u x %u (maximum fixed by jpeg2000 norm is 65535 tiles)\n",
+                            l_cp->tw, l_cp->th);
+            return OPJ_FALSE;
+        }
         l_nb_tiles = l_cp->tw * l_cp->th;
 
         /* Define the tiles which will be decoded */
@@ -2822,6 +2837,13 @@ static OPJ_BOOL opj_j2k_read_qcc(   opj_j2k_t *p_j2k,
                 backup_compno++;
         };
 #endif /* USE_JPWL */
+
+        if (l_comp_no >= p_j2k->m_private_image->numcomps) {
+                opj_event_msg(p_manager, EVT_ERROR,
+                              "Invalid component number: %d, regarding the number of components %d\n",
+                              l_comp_no, p_j2k->m_private_image->numcomps);
+                return OPJ_FALSE;
+        }
 
         if (! opj_j2k_read_SQcd_SQcc(p_j2k,l_comp_no,p_header_data,&p_header_size,p_manager)) {
                 opj_event_msg(p_manager, EVT_ERROR, "Error reading QCC marker\n");
@@ -7883,8 +7905,8 @@ OPJ_BOOL opj_j2k_read_SPCod_SPCoc(  opj_j2k_t *p_j2k,
         ++l_tccp->numresolutions;                                                                               /* tccp->numresolutions = read() + 1 */
         if (l_tccp->numresolutions > OPJ_J2K_MAXRLVLS) {
                 opj_event_msg(p_manager, EVT_ERROR,
-                              "Invalid value for numresolutions : %d\n",
-                              l_tccp->numresolutions);
+                              "Invalid value for numresolutions : %d, max value is set in openjpeg.h at %d\n",
+                              l_tccp->numresolutions, OPJ_J2K_MAXRLVLS);
                 return OPJ_FALSE;
         }
         ++l_current_ptr;
