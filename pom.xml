@@ -57,6 +57,7 @@
 							<generator>${cmake.generator}</generator>
 							<environmentVariables>
 								<BUILD_THIRDPARTY>on</BUILD_THIRDPARTY>
+								<BUILD_JAVA>on</BUILD_JAVA>
 							</environmentVariables>
 						</configuration>
 					</execution>
