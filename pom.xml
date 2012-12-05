@@ -158,8 +158,18 @@
 			<name>FreeLibrary Snapshot Repository</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
+		<pluginRepository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/content/groups/staging/</url>
+		</pluginRepository>
 	</repositories>
 	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/content/groups/staging/</url>
+		</pluginRepository>
 		<pluginRepository>
 			<id>freelib-snapshots</id>
 			<name>FreeLibrary Snapshot Repository</name>
