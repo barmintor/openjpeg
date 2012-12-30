@@ -44,7 +44,7 @@
 			<plugin>
 				<groupId>com.googlecode.cmake-maven-project</groupId>
 				<artifactId>cmake-maven-plugin</artifactId>
-				<version>2.8.10.2-b1</version>
+				<version>2.8.10.2-b2</version>
 				<executions>
 					<execution>
 						<id>cmake-generate</id>
@@ -55,7 +55,10 @@
 							<sourcePath>${project.basedir}</sourcePath>
 							<targetPath>${project.basedir}/target/openjpeg</targetPath>
 							<generator>${cmake.generator}</generator>
-							<options>-DBUILD_THIRDPARTY:bool=on -DBUILD_JAVA:bool=on</options>
+							<options>
+								<option>-DBUILD_THIRDPARTY:bool=on</option>
+								<option>-DBUILD_JAVA:bool=on</option>
+							</options>
 						</configuration>
 					</execution>
 					<execution>
@@ -86,7 +89,7 @@
 									<pluginExecutionFilter>
 										<groupId>com.googlecode.cmake-maven-project</groupId>
 										<artifactId>cmake-maven-plugin</artifactId>
-										<versionRange>[2.8.10.2-b1,)</versionRange>
+										<versionRange>[2.8.10.2-b2,)</versionRange>
 										<goals>
 											<goal>generate</goal>
 											<goal>compile</goal>
