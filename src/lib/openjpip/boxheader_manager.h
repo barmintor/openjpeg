@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: boxheader_manager.h 2253 2012-12-04 12:20:30Z savmickael $
  *
  * Copyright (c) 2002-2011, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium
  * Copyright (c) 2002-2011, Professor Benoit Macq
