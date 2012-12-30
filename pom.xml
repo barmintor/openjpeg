@@ -152,7 +152,7 @@
 		-->
 	</profiles>
 
-	<repositories>
+<!--	<repositories>
 		<repository>
 			<id>freelib-snapshots</id>
 			<name>FreeLibrary Snapshot Repository</name>
@@ -163,17 +163,12 @@
 			<name>Nexus Release Repository</name>
 			<url>https://oss.sonatype.org/content/groups/staging/</url>
 		</repository>
-	</repositories>
+	</repositories>-->
 	<pluginRepositories>
 		<pluginRepository>
-			<id>sonatype-nexus-staging</id>
-			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/content/groups/staging/</url>
-		</pluginRepository>
-		<pluginRepository>
 			<id>freelib-snapshots</id>
 			<name>FreeLibrary Snapshot Repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<url>https://oss.sonatype.org/content/repositories/staging</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>
