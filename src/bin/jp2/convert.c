@@ -48,6 +48,14 @@
 #include "openjpeg.h"
 #include "convert.h"
 
+typedef enum JP2_COLOR_SPACE {
+        JP2_CLRSPC_UNKNOWN = -1,        /**< not supported by the library */
+        JP2_CLRSPC_UNSPECIFIED = 0, /**< not specified in the codestream */ 
+        JP2_CLRSPC_SRGB = 1,            /**< sRGB */
+        JP2_CLRSPC_GRAY = 2,            /**< grayscale */
+        JP2_CLRSPC_SYCC = 3                     /**< YUV */
+} JP2_COLOR_SPACE;
+
 /*
  * Get logarithm of an integer and round downwards.
  *
@@ -285,12 +293,12 @@ opj_image_t* tgatoimage(const char *filename, opj_cparameters_t *parameters) {
 	save_alpha = (pixel_bit_depth == 16) || (pixel_bit_depth == 32); /* Mono with alpha, or RGB with alpha */
 
 	if (mono) {
-		color_space = OPJ_CLRSPC_GRAY;
+		color_space = JP2_CLRSPC_GRAY;
 		numcomps = save_alpha ? 2 : 1;
 	}	
 	else {
 		numcomps = save_alpha ? 4 : 3;
-		color_space = OPJ_CLRSPC_SRGB;
+		color_space = JP2_CLRSPC_SRGB;
 	}
 
 	subsampling_dx = parameters->subsampling_dx;
@@ -657,7 +665,7 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 	if (Info_h.biBitCount == 24) 
    {
 	numcomps = 3;
-	color_space = OPJ_CLRSPC_SRGB;
+	color_space = JP2_CLRSPC_SRGB;
 	/* initialize image components */
 	memset(&cmptparm[0], 0, 3 * sizeof(opj_image_cmptparm_t));
 	for(i = 0; i < numcomps; i++) 
@@ -757,7 +765,7 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 	 W++;
 			
 	numcomps = gray_scale ? 1 : 3;
-	color_space = gray_scale ? OPJ_CLRSPC_GRAY : OPJ_CLRSPC_SRGB;
+	color_space = gray_scale ? JP2_CLRSPC_GRAY : JP2_CLRSPC_SRGB;
 		/* initialize image components */
 	memset(&cmptparm[0], 0, 3 * sizeof(opj_image_cmptparm_t));
 	for(i = 0; i < numcomps; i++) 
@@ -867,7 +875,7 @@ opj_image_t* bmptoimage(const char *filename, opj_cparameters_t *parameters)
 			gray_scale = 0;
 
 		numcomps = gray_scale ? 1 : 3;
-		color_space = gray_scale ? OPJ_CLRSPC_GRAY : OPJ_CLRSPC_SRGB;
+		color_space = gray_scale ? JP2_CLRSPC_GRAY : JP2_CLRSPC_SRGB;
 		/* initialize image components */
 		memset(&cmptparm[0], 0, 3 * sizeof(opj_image_cmptparm_t));
 		for (i = 0; i < numcomps; i++)
@@ -1278,7 +1286,7 @@ opj_image_t* pgxtoimage(const char *filename, opj_cparameters_t *parameters) {
 	opj_image_comp_t *comp = NULL;
 
 	numcomps = 1;
-	color_space = OPJ_CLRSPC_GRAY;
+	color_space = JP2_CLRSPC_GRAY;
 
 	memset(&cmptparm, 0, sizeof(opj_image_cmptparm_t));
 
@@ -1747,9 +1755,9 @@ opj_image_t* pnmtoimage(const char *filename, opj_cparameters_t *parameters) {
     default: fclose(fp); return NULL;
    }
     if(numcomps < 3)
-     color_space = OPJ_CLRSPC_GRAY;/* GRAY, GRAYA */
+     color_space = JP2_CLRSPC_GRAY;/* GRAY, GRAYA */
     else
-     color_space = OPJ_CLRSPC_SRGB;/* RGB, RGBA */
+     color_space = JP2_CLRSPC_SRGB;/* RGB, RGBA */
 
     prec = has_prec(header_info.maxval);
 
@@ -2538,7 +2546,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	if(tiPhoto == PHOTOMETRIC_RGB) /* RGB(A) */
    {
 	numcomps = 3 + has_alpha;
-	color_space = OPJ_CLRSPC_SRGB;
+	color_space = JP2_CLRSPC_SRGB;
 
 /*#define USETILEMODE*/
 	for(j = 0; j < numcomps; j++) 
@@ -2702,7 +2710,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	if(tiPhoto == PHOTOMETRIC_MINISBLACK) /* GRAY(A) */
    {
 	numcomps = 1 + has_alpha;
-	color_space = OPJ_CLRSPC_GRAY;
+	color_space = JP2_CLRSPC_GRAY;
 
 	for(j = 0; j < numcomps; ++j)
   {
@@ -2830,7 +2838,7 @@ static opj_image_t* rawtoimage_common(const char *filename, opj_cparameters_t *p
 		return NULL;
 	}
 	numcomps = raw_cp->rawComp;
-	color_space = OPJ_CLRSPC_SRGB;
+	color_space = JP2_CLRSPC_SRGB;
 	w = raw_cp->rawWidth;
 	h = raw_cp->rawHeight;
 	cmptparm = (opj_image_cmptparm_t*) malloc(numcomps * sizeof(opj_image_cmptparm_t));
@@ -3216,7 +3224,7 @@ opj_image_t *pngtoimage(const char *read_idf, opj_cparameters_t * params)
 	cmptparm[i].h = height;
    }
 
-	image = opj_image_create(nr_comp, &cmptparm[0], OPJ_CLRSPC_SRGB);
+	image = opj_image_create(nr_comp, &cmptparm[0], JP2_CLRSPC_SRGB);
 
 	if(image == NULL) goto fin;
 
