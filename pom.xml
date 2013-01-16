@@ -56,9 +56,12 @@
 							<targetPath>${project.basedir}/target/openjpeg</targetPath>
 							<generator>${cmake.generator}</generator>
 							<options>
-								<!--<option>-DBUILD_THIRDPARTY:bool=on</option>-->
+								<option>-DBUILD_THIRDPARTY:bool=on</option>
 								<option>-DBUILD_JAVA:bool=on</option>
 							</options>
+							<environmentVariables>
+							    <CFLAGS>-fPIC</CFLAGS>
+							</environmentVariables>
 						</configuration>
 					</execution>
 					<execution>
@@ -68,8 +71,6 @@
 						</goals>
 						<configuration>
 							<projectDirectory>${project.basedir}/target/openjpeg</projectDirectory>
-							<environmentVariables>
-							</environmentVariables>
 						</configuration>
 					</execution>
 				</executions>
