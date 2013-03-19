@@ -28,9 +28,10 @@ opj_compress -i @INPUT_NR_PATH@/Cevennes1.bmp -o @TEMP_PATH@/Cevennes1.j2k -r 10
 opj_compress -i @INPUT_NR_PATH@/Cevennes2.ppm -o @TEMP_PATH@/Cevennes2.jp2 -r 50
 opj_compress -i @INPUT_NR_PATH@/Rome.bmp -o @TEMP_PATH@/Rome.jp2 -q 30,35,50 -p LRCP -n 3
 # related to issue 5
-opj_compress -i @INPUT_NR_PATH@/random.tif -o @TEMP_PATH@/random.tif.j2k
+opj_compress -i @INPUT_NR_PATH@/random-issue-0005.tif -o @TEMP_PATH@/random-issue-0005.tif.j2k
 # related to issue 62
-opj_compress -i @INPUT_NR_PATH@/tmp.raw -o @TEMP_PATH@/tmp.raw.j2k -F 512,512,1,16,u
+opj_compress -i @INPUT_NR_PATH@/tmp-issue-0062.raw -o @TEMP_PATH@/tmp-issue-0062-u.raw.j2k -F 512,512,1,16,u
+opj_compress -i @INPUT_NR_PATH@/tmp-issue-0062.raw -o @TEMP_PATH@/tmp-issue-0062-s.raw.j2k -F 512,512,1,16,s
 opj_compress -i @INPUT_NR_PATH@/X_4_2K_24_185_CBR_WB_000.tif -o @TEMP_PATH@/X_4_2K_24_185_CBR_WB_000.j2k -cinema2K 24
 opj_compress -i @INPUT_NR_PATH@/X_5_2K_24_235_CBR_STEM24_000.tif -o @TEMP_PATH@/X_5_2K_24_235_CBR_STEM24_000.j2k -cinema2K 24
 opj_compress -i @INPUT_NR_PATH@/X_6_2K_24_FULL_CBR_CIRCLE_000.tif -o @TEMP_PATH@/X_6_2K_24_FULL_CBR_CIRCLE_000.j2k -cinema2K 24
@@ -86,6 +87,10 @@ opj_decompress -i  @INPUT_NR_PATH@/mem-b2b86b74-2753.jp2 -o @TEMP_PATH@/mem-b2b8
 !opj_decompress -i  @INPUT_NR_PATH@/gdal_fuzzer_check_number_of_tiles.jp2 -o @TEMP_PATH@/gdal_fuzzer_check_number_of_tiles.pgx
 # issue 194 raised by the gdal fuzzer test (should nicely failed)
 ! opj_decompress -i  @INPUT_NR_PATH@/gdal_fuzzer_check_comp_dx_dy.jp2 -o @TEMP_PATH@/gdal_fuzzer_check_comp_dx_dy.pgx
+# issue 202 
+opj_decompress -i  @INPUT_NR_PATH@/file409752.jp2 -o @TEMP_PATH@/file409752.png
+# issue 188 
+opj_decompress -i  @INPUT_NR_PATH@/issue188_beach_64bitsbox.jp2 -o @TEMP_PATH@/issue188_beach_64bitsbox.jp2.tif
 
 # decode with specific area
 # prec=12; nb_c=1 

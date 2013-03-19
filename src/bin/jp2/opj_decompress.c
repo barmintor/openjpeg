@@ -31,7 +31,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "opj_config.h"
+#include "opj_apps_config.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -57,10 +57,10 @@
 #include "convert.h"
 #include "index.h"
 
-#ifdef HAVE_LIBLCMS2
+#ifdef OPJ_HAVE_LIBLCMS2
 #include <lcms2.h>
 #endif
-#ifdef HAVE_LIBLCMS1
+#ifdef OPJ_HAVE_LIBLCMS1
 #include <lcms.h>
 #endif
 #include "color.h"
@@ -676,7 +676,6 @@ static void info_callback(const char *msg, void *client_data) {
 /* -------------------------------------------------------------------------- */
 int main(int argc, char **argv)
 {
-	FILE *fsrc = NULL;
 
 	opj_dparameters_t parameters;			/* decompression parameters */
 	opj_image_t* image = NULL;
@@ -746,16 +745,10 @@ int main(int argc, char **argv)
 
 		/* read the input file and put it in memory */
 		/* ---------------------------------------- */
-		fsrc = fopen(parameters.infile, "rb");
-		if (!fsrc) {
-			fprintf(stderr, "ERROR -> failed to open %s for reading\n", parameters.infile);
-			return EXIT_FAILURE;
-		}
 
-		l_stream = opj_stream_create_default_file_stream(fsrc,1);
+		l_stream = opj_stream_create_default_file_stream_v3(parameters.infile,1);
 		if (!l_stream){
-			fclose(fsrc);
-			fprintf(stderr, "ERROR -> failed to create the stream from the file\n");
+			fprintf(stderr, "ERROR -> failed to create the stream from the file %s\n", parameters.infile);
 			return EXIT_FAILURE;
 		}
 
@@ -783,7 +776,7 @@ int main(int argc, char **argv)
 			}
 			default:
 				fprintf(stderr, "skipping file..\n");
-				opj_stream_destroy(l_stream);
+				opj_stream_destroy_v3(l_stream);
 				continue;
 		}
 
@@ -795,8 +788,7 @@ int main(int argc, char **argv)
 		/* Setup the decoder decoding parameters using user parameters */
 		if ( !opj_setup_decoder(l_codec, &parameters) ){
 			fprintf(stderr, "ERROR -> j2k_dump: failed to setup the decoder\n");
-			opj_stream_destroy(l_stream);
-			fclose(fsrc);
+			opj_stream_destroy_v3(l_stream);
 			opj_destroy_codec(l_codec);
 			return EXIT_FAILURE;
 		}
@@ -805,8 +797,7 @@ int main(int argc, char **argv)
 		/* Read the main header of the codestream and if necessary the JP2 boxes*/
 		if(! opj_read_header(l_stream, l_codec, &image)){
 			fprintf(stderr, "ERROR -> opj_decompress: failed to read the header\n");
-			opj_stream_destroy(l_stream);
-			fclose(fsrc);
+			opj_stream_destroy_v3(l_stream);
 			opj_destroy_codec(l_codec);
 			opj_image_destroy(image);
 			return EXIT_FAILURE;
@@ -817,10 +808,9 @@ int main(int argc, char **argv)
 			if (!opj_set_decode_area(l_codec, image, parameters.DA_x0,
 					parameters.DA_y0, parameters.DA_x1, parameters.DA_y1)){
 				fprintf(stderr,	"ERROR -> opj_decompress: failed to set the decoded area\n");
-				opj_stream_destroy(l_stream);
+				opj_stream_destroy_v3(l_stream);
 				opj_destroy_codec(l_codec);
 				opj_image_destroy(image);
-				fclose(fsrc);
 				return EXIT_FAILURE;
 			}
 
@@ -828,9 +818,8 @@ int main(int argc, char **argv)
 			if (!(opj_decode(l_codec, l_stream, image) && opj_end_decompress(l_codec,	l_stream))) {
 				fprintf(stderr,"ERROR -> opj_decompress: failed to decode image!\n");
 				opj_destroy_codec(l_codec);
-				opj_stream_destroy(l_stream);
+				opj_stream_destroy_v3(l_stream);
 				opj_image_destroy(image);
-				fclose(fsrc);
 				return EXIT_FAILURE;
 			}
 		}
@@ -840,33 +829,30 @@ int main(int argc, char **argv)
 			/*if (!opj_set_decoded_resolution_factor(l_codec, 5)) {
 				fprintf(stderr, "ERROR -> opj_decompress: failed to set the resolution factor tile!\n");
 				opj_destroy_codec(l_codec);
-				opj_stream_destroy(l_stream);
+				opj_stream_destroy_v3(l_stream);
 				opj_image_destroy(image);
-				fclose(fsrc);
 				return EXIT_FAILURE;
 			}*/
 
 			if (!opj_get_decoded_tile(l_codec, l_stream, image, parameters.tile_index)) {
 				fprintf(stderr, "ERROR -> opj_decompress: failed to decode tile!\n");
 				opj_destroy_codec(l_codec);
-				opj_stream_destroy(l_stream);
+				opj_stream_destroy_v3(l_stream);
 				opj_image_destroy(image);
-				fclose(fsrc);
 				return EXIT_FAILURE;
 			}
 			fprintf(stdout, "tile %d is decoded!\n\n", parameters.tile_index);
 		}
 
 		/* Close the byte stream */
-		opj_stream_destroy(l_stream);
-		fclose(fsrc);
+		opj_stream_destroy_v3(l_stream);
 
 		if(image->color_space == OPJ_CLRSPC_SYCC){
 			color_sycc_to_rgb(image); /* FIXME */
 		}
 
 		if(image->icc_profile_buf) {
-#if defined(HAVE_LIBLCMS1) || defined(HAVE_LIBLCMS2)
+#if defined(OPJ_HAVE_LIBLCMS1) || defined(OPJ_HAVE_LIBLCMS2)
 			color_apply_icc_profile(image); /* FIXME */
 #endif
 			free(image->icc_profile_buf);
@@ -902,7 +888,7 @@ int main(int argc, char **argv)
 				fprintf(stdout,"Generated Outfile %s\n",parameters.outfile);
 			}
 			break;
-#ifdef HAVE_LIBTIFF
+#ifdef OPJ_HAVE_LIBTIFF
 		case TIF_DFMT:			/* TIFF */
 			if(imagetotif(image, parameters.outfile)){
 				fprintf(stdout,"Outfile %s not generated\n",parameters.outfile);
@@ -911,7 +897,7 @@ int main(int argc, char **argv)
 				fprintf(stdout,"Generated Outfile %s\n",parameters.outfile);
 			}
 			break;
-#endif /* HAVE_LIBTIFF */
+#endif /* OPJ_HAVE_LIBTIFF */
 		case RAW_DFMT:			/* RAW */
 			if(imagetoraw(image, parameters.outfile)){
 				fprintf(stdout,"Error generating raw file. Outfile %s not generated\n",parameters.outfile);
@@ -938,7 +924,7 @@ int main(int argc, char **argv)
 				fprintf(stdout,"Successfully generated Outfile %s\n",parameters.outfile);
 			}
 			break;
-#ifdef HAVE_LIBPNG
+#ifdef OPJ_HAVE_LIBPNG
 		case PNG_DFMT:			/* PNG */
 			if(imagetopng(image, parameters.outfile)){
 				fprintf(stdout,"Error generating png file. Outfile %s not generated\n",parameters.outfile);
@@ -947,9 +933,9 @@ int main(int argc, char **argv)
 				fprintf(stdout,"Successfully generated Outfile %s\n",parameters.outfile);
 			}
 			break;
-#endif /* HAVE_LIBPNG */
+#endif /* OPJ_HAVE_LIBPNG */
 /* Can happen if output file is TIFF or PNG
- * and HAVE_LIBTIF or HAVE_LIBPNG is undefined
+ * and OPJ_HAVE_LIBTIF or OPJ_HAVE_LIBPNG is undefined
 */
 			default:
 				fprintf(stderr,"Outfile %s not generated\n",parameters.outfile);

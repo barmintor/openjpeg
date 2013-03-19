@@ -1,6 +1,7 @@
 # Tests
 include_directories(
   ${OPENJPEG_BINARY_DIR}/src/lib/openjp2 # opj_config.h
+  ${OPENJPEG_BINARY_DIR}/src/bin/common # opj_apps_config.h
   ${OPENJPEG_SOURCE_DIR}/src/lib/openjp2
   ${OPENJPEG_SOURCE_DIR}/src/bin/jp2
   ${OPENJPEG_SOURCE_DIR}/src/bin/common
@@ -79,7 +80,7 @@ add_test(rta5 ${EXECUTABLE_OUTPUT_PATH}/j2k_random_tile_access tte5.j2k)
 set_property(TEST rta5 APPEND PROPERTY DEPENDS tte5)
 
 # No image send to the dashboard if lib PNG is not available.
-if(NOT HAVE_LIBPNG)
+if(NOT OPJ_HAVE_LIBPNG)
   message(WARNING "Lib PNG seems to be not available: if you want run the non-regression tests with images reported to the dashboard, you need it (try BUILD_THIRDPARTY)")
 endif()
 

@@ -53,7 +53,7 @@
 #include <strings.h>
 #endif /* _WIN32 */
 
-#include "opj_config.h"
+#include "opj_apps_config.h"
 #include "openjpeg.h"
 #include "opj_getopt.h"
 #include "convert.h"
@@ -1588,7 +1588,6 @@ static void info_callback(const char *msg, void *client_data) {
  */
 /* -------------------------------------------------------------------------- */
 int main(int argc, char **argv) {
-	FILE *fout = NULL;
 
 	opj_cparameters_t parameters;	/* compression parameters */
 
@@ -1728,7 +1727,7 @@ int main(int argc, char **argv) {
 				}
 				break;
 
-#ifdef HAVE_LIBTIFF
+#ifdef OPJ_HAVE_LIBTIFF
 			case TIF_DFMT:
 				image = tiftoimage(parameters.infile, &parameters);
 				if (!image) {
@@ -1736,7 +1735,7 @@ int main(int argc, char **argv) {
 					return 1;
 				}
 			break;
-#endif /* HAVE_LIBTIFF */
+#endif /* OPJ_HAVE_LIBTIFF */
 
 			case RAW_DFMT:
 				image = rawtoimage(parameters.infile, &parameters, &raw_cp);
@@ -1762,7 +1761,7 @@ int main(int argc, char **argv) {
 				}
 			break;
 
-#ifdef HAVE_LIBPNG
+#ifdef OPJ_HAVE_LIBPNG
 			case PNG_DFMT:
 				image = pngtoimage(parameters.infile, &parameters);
 				if (!image) {
@@ -1770,11 +1769,11 @@ int main(int argc, char **argv) {
 					return 1;
 				}
 				break;
-#endif /* HAVE_LIBPNG */
+#endif /* OPJ_HAVE_LIBPNG */
 		}
 
 /* Can happen if input file is TIFF or PNG 
- * and HAVE_LIBTIF or HAVE_LIBPNG is undefined
+ * and OPJ_HAVE_LIBTIF or OPJ_HAVE_LIBPNG is undefined
 */
 		if( !image) {
 			fprintf(stderr, "Unable to load file: got no image\n");
@@ -1806,7 +1805,7 @@ int main(int argc, char **argv) {
 			}
 			default:
 				fprintf(stderr, "skipping file..\n");
-				opj_stream_destroy(l_stream);
+				opj_stream_destroy_v3(l_stream);
 				continue;
 		}
 		
@@ -1824,16 +1823,8 @@ int main(int argc, char **argv) {
     }
 		opj_setup_encoder(l_codec, &parameters, image);
 
-		/* Open the output file*/
-		fout = fopen(parameters.outfile, "wb");
-		if (! fout) {
-			fprintf(stderr, "Not enable to create output file!\n");
-			opj_stream_destroy(l_stream);
-			return 1;
-		}
-
 		/* open a byte stream for writing and allocate memory for all tiles */
-		l_stream = opj_stream_create_default_file_stream(fout,OPJ_FALSE);
+		l_stream = opj_stream_create_default_file_stream_v3(parameters.outfile,OPJ_FALSE);
 		if (! l_stream){
 			return 1;
 		}
@@ -1852,8 +1843,7 @@ int main(int argc, char **argv) {
       for (i=0;i<l_nb_tiles;++i) {
         if (! opj_write_tile(l_codec,i,l_data,l_data_size,l_stream)) {
           fprintf(stderr, "ERROR -> test_tile_encoder: failed to write the tile %d!\n",i);
-          opj_stream_destroy(l_stream);
-          fclose(fout);
+          opj_stream_destroy_v3(l_stream);
           opj_destroy_codec(l_codec);
           opj_image_destroy(image);
           return 1;
@@ -1873,8 +1863,7 @@ int main(int argc, char **argv) {
 		}
 
 		if (!bSuccess)  {
-			opj_stream_destroy(l_stream);
-			fclose(fout);
+			opj_stream_destroy_v3(l_stream);
       opj_destroy_codec(l_codec);
       opj_image_destroy(image);
 			fprintf(stderr, "failed to encode image\n");
@@ -1883,8 +1872,7 @@ int main(int argc, char **argv) {
 
 		fprintf(stderr,"Generated outfile %s\n",parameters.outfile);
 		/* close and free the byte stream */
-		opj_stream_destroy(l_stream);
-		fclose(fout);
+		opj_stream_destroy_v3(l_stream);
 
 		/* free remaining compression structures */
 		opj_destroy_codec(l_codec);
