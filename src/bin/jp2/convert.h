@@ -31,10 +31,6 @@
 #ifndef __J2K_CONVERT_H
 #define __J2K_CONVERT_H
 
-typedef int OPJ_BOOL;
-#define OPJ_TRUE 1
-#define OPJ_FALSE 0
-
 /**@name RAW image encoding parameters */
 /*@{*/
 typedef struct raw_cparameters {
