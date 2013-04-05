@@ -12,7 +12,7 @@ This project is a repackaging of OpenJPEG.  The repackaging makes it available f
 
 To use the FreeLibrary Java Wrapping for OpenJPEG, check the repository out from GitHub:
 
-    git clone http://github.com/ksclarke/openjpeg
+    git clone git://github.com/ksclarke/openjpeg.git
 
 Install Maven and Java 7's JDK on your machine and then build the project:
 
