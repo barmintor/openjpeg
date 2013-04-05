@@ -25,7 +25,7 @@ You should see some unit tests run that confirm that the JNI layer is working.
  License
 -------------------------
 
-The FreeLibrary Java Wrapping for OpenJPEG code is released under the same license as the OpenJPEG project's code (the BSD 2-Clause License).
+The Java wrapping for OpenJPEG is released under the same license as the OpenJPEG project's code (the BSD 2-Clause License).
 
 &nbsp;&nbsp;&nbsp;&nbsp;https://code.google.com/p/openjpeg/source/browse/trunk/LICENSE  
 &nbsp;&nbsp;&nbsp;&nbsp;https://github.com/ksclarke/openjpeg/blob/develop/LICENSE
@@ -36,5 +36,5 @@ The FreeLibrary Java Wrapping for OpenJPEG code is released under the same licen
 
 If you're interested in the OpenJPEG library (the C code) you should ask questions at http://www.openjpeg.org/
 
-If you're interested in the Java wrapping for OpenJPEG, feel free to ask me (<a href="mailto:ksclarke@gmail.com">Kevin S. Clarke</a>) questions.
+If you're interested in the Java wrapping for OpenJPEG, feel free to ask me (<a href="mailto:ksclarke@gmail.com">Kevin S. Clarke</a>) your questions.
 
