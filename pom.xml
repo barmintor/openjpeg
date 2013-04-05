@@ -9,9 +9,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>info.freelibrary</groupId>
-	<artifactId>openjpeg</artifactId>
+	<artifactId>freelib-openjpeg</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
-	<name>FreeLib Djatoka OpenJPEG</name>
+	<name>FreeLibrary OpenJPEG Fork</name>
 	<packaging>jar</packaging>
 	<description>A repackaging of OpenJPEG so that it can be used from within Maven</description>
 
@@ -28,9 +28,24 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.10</version>
+		</dependency>		
 	</dependencies>
 
 	<build>
+		<sourceDirectory>${basedir}/wrapping/jni/openjp2/java</sourceDirectory>
+		<testSourceDirectory>${basedir}/wrapping/jni/openjp2/tests</testSourceDirectory>
+		<outputDirectory>${project.build.directory}/classes</outputDirectory>
+		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -57,7 +72,7 @@
 							<generator>${cmake.generator}</generator>
 							<options>
 								<option>-DBUILD_THIRDPARTY:bool=on</option>
-								<!--<option>-DBUILD_JAVA:bool=on</option>-->
+								<option>-DBUILD_JNI:bool=on</option>
 							</options>
 							<environmentVariables>
 							    <CFLAGS>-fPIC</CFLAGS>
@@ -74,6 +89,26 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<classesDirectory>${project.basedir}/target/openjpeg/bin</classesDirectory>
+					<includes>
+						<include>*</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.14</version>
+				<configuration>
+					<forkMode>once</forkMode>
+					<argLine>-Djava.library.path=${project.basedir}/target/openjpeg/bin -XX:ErrorFile=${project.basedir}/target/logs/hs_err_pid&lt;pid&gt;.log</argLine>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
