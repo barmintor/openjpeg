@@ -1,4 +1,4 @@
-find_package(Java REQUIRED)
+find_package(Java 1.6 REQUIRED)
 find_package(JNI REQUIRED)
 
 # Define our Java class (the OpenJPEG bridge class)
@@ -8,10 +8,28 @@ set(JAVA_CLASS info.freelibrary.openjpeg.JP2Bridge)
 set(JAVAH_CMD ${Java_JAVAH_EXECUTABLE} -d ${CMAKE_CURRENT_SOURCE_DIR}
     -classpath ${CMAKE_CURRENT_SOURCE_DIR}/java ${JAVA_CLASS})
 
+# Include external header files
+IF(OPJ_HAVE_LCMS2_H)
+  include_directories(${LCMS_INCLUDE_DIRNAME})
+ENDIF(OPJ_HAVE_LCMS2_H)
+
+# Include external header files
+IF(OPJ_HAVE_PNG_H)
+  include_directories(
+    ${PNG_INCLUDE_DIRNAME}
+    ${Z_INCLUDE_DIRNAME}
+  )
+ENDIF(OPJ_HAVE_PNG_H)
+
+# Include external header files
+IF(OPJ_HAVE_TIFF_H)
+  include_directories(${TIFF_INCLUDE_DIRNAME})
+ENDIF(OPJ_HAVE_TIFF_H)
+
 # Pull in the JNI includes
 include_directories(
   ${JNI_INCLUDE_DIRS}
-  ${OPENJPEG_BINARY_DIR}/src/lib/openjp2 # opj_config.h
+  ${OPENJPEG_BINARY_DIR}/src/lib/openjp2
   ${OPENJPEG_BINARY_DIR}/src/bin/common
   ${OPENJPEG_SOURCE_DIR}/src/bin/common
   ${OPENJPEG_SOURCE_DIR}/src/bin/jp2

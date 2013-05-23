@@ -16,7 +16,7 @@ public class JP2BridgeTest {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(JP2BridgeTest.class);
 
-	private static final String TIF_DIR = "target/openjpeg-data--master/baseline/conformance/";
+	private static final String TIF_DIR = "target/openjpeg-data-master/baseline/conformance/";
 	private static final String OUTPUT_DIR = "target/test-resources";
 	
 	@BeforeClass

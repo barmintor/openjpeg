@@ -71,7 +71,7 @@
 							</options>
 							<environmentVariables>
 							    <CFLAGS>-fPIC</CFLAGS>
-								<OPJ_DATA_ROOT>${project.build.directory}/openjpeg-data--master</OPJ_DATA_ROOT>
+								<OPJ_DATA_ROOT>${project.build.directory}/openjpeg-data-master</OPJ_DATA_ROOT>
 							</environmentVariables>
 						</configuration>
 					</execution>
